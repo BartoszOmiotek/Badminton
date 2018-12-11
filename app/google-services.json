@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "469593160943",
+    "firebase_url": "https://badminton-cecc4.firebaseio.com",
+    "project_id": "badminton-cecc4",
+    "storage_bucket": "badminton-cecc4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469593160943:android:8ffa59169f4cf060",
+        "android_client_info": {
+          "package_name": "com.example.bartek.badminton"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469593160943-da3fmou1buc3327nbk1sro72do7pqpb8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bartek.badminton",
+            "certificate_hash": "eba0f35579de0e4b3c9640133706059d325ee42b"
+          }
+        },
+        {
+          "client_id": "469593160943-9f5a1t0pl8of6h26u8uvdhknqrkp18uc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5URpcw6ZCBsfg-9eTKYPGqOyHruqUE_s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469593160943-9f5a1t0pl8of6h26u8uvdhknqrkp18uc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
