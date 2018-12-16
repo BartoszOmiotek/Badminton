@@ -1,254 +1,234 @@
 package com.example.bartek.badminton.LiveScore;
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.bartek.badminton.Language.LanguageInterface;
+import com.example.bartek.badminton.Language.LanguageEnglish;
 import com.example.bartek.badminton.R;
+import com.google.firebase.firestore.DocumentReference;
+
+import java.util.Locale;
+import android.content.res.Resources;
 
 public class LiveScorePresenter implements LiveScoreContract{
 
     private LiveScoreActivity activity;
-
-    private TextView p1_set_bilans;
-    private Button p1_inc_point;
-    private Button p1_dec_point;
-    private TextView p1_points;
-
-    private TextView p1_set1_points;
-    private TextView p1_set2_points;
-    private TextView p1_set3_points;
-
-    private TextView p2_set_bilans;
-    private Button p2_inc_point;
-    private Button p2_dec_point;
-    private TextView p2_points;
-
-    private TextView p2_set1_points;
-    private TextView p2_set2_points;
-    private TextView p2_set3_points;
+    private DocumentReference match_document;
+    private LanguageInterface lang=new LanguageEnglish(); //set language --TO DO: GET LANGUAGE FROM APP OPTIONS
+    private Player p1;
+    private Player p2;
 
     private int current_set; // describes number representation of current set (1,2,3)
     private TextView set1_colon;
     private TextView set2_colon;
     private TextView set3_colon;
-    private TextView p1_current_set_points;
-    private TextView p2_current_set_points;
     private TextView current_set_colon;
-    private boolean dialog_confirm_match;
 
-    public LiveScorePresenter(LiveScoreActivity activity){
+    LiveScorePresenter(LiveScoreActivity activity){ // constructor
         this.activity=activity;
+        init();
     }
 
     @Override
     public void init() {
-        p1_inc_point=activity.findViewById(R.id.p1_inc_point_btn);
-        p1_dec_point=activity.findViewById(R.id.p1_dec_point_btn);
-        p1_points=activity.findViewById(R.id.p1_points);
-
-        p2_inc_point=activity.findViewById(R.id.p2_inc_point_btn);
-        p2_dec_point=activity.findViewById(R.id.p2_dec_point_btn);
-        p2_points=activity.findViewById(R.id.p2_points);
-
-        p1_set1_points=activity.findViewById(R.id.p1_set1_points);
-        p1_set2_points=activity.findViewById(R.id.p1_set2_points);
-        p1_set3_points=activity.findViewById(R.id.p1_set3_points);
-
-        p2_set1_points=activity.findViewById(R.id.p2_set1_points);
-        p2_set2_points=activity.findViewById(R.id.p2_set2_points);
-        p2_set3_points=activity.findViewById(R.id.p2_set3_points);
-
-        p1_set_bilans=activity.findViewById(R.id.p1_set_bilans);
-        p2_set_bilans=activity.findViewById(R.id.p2_set_bilans);
-
+        match_document=new LiveScoreModel().getMatchReference();
         set1_colon=activity.findViewById(R.id.set1_colon);
         set2_colon=activity.findViewById(R.id.set2_colon);
         set3_colon=activity.findViewById(R.id.set3_colon);
 
+        p1=new Player(activity,"1");
+        p2=new Player(activity,"2");
+
         current_set=1;
+        setCurrentSet();
 
-        p1_inc_point.setOnClickListener(new View.OnClickListener() {
+        p1.getInc_point().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int points=Integer.parseInt(p1_points.getText().toString()); // get current points
+                int points=Integer.parseInt(p1.getPoints().getText().toString()); // get current points
                 points+=1; // increase points by 1
-                p1_points.setText(String.valueOf(points));
-                check_set_winner();
+                p1.getPoints().setText(String.valueOf(points));
+                updatePointsScore();
+                checkSetWinner(p1,p2);
             }
         });
-
-        p1_dec_point.setOnClickListener(new View.OnClickListener() {
+        p1.getDec_point().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int points=Integer.parseInt(p1_points.getText().toString()); // get current points
+                int points=Integer.parseInt(p1.getPoints().getText().toString()); // get current points
                 if(points>0)
                     points-=1; // decrease points by 1
-                p1_points.setText(String.valueOf(points));
-                check_set_winner();
+                p1.getPoints().setText(String.valueOf(points));
+                updatePointsScore();
+                checkSetWinner(p1,p2);
             }
         });
-
-        p2_inc_point.setOnClickListener(new View.OnClickListener() {
+        p2.getInc_point().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int points=Integer.parseInt(p2_points.getText().toString()); // get current points
+                int points=Integer.parseInt(p2.getPoints().getText().toString()); // get current points
                 points+=1; // increase points by 1
-                p2_points.setText(String.valueOf(points));
-                check_set_winner();
+                p2.getPoints().setText(String.valueOf(points));
+                updatePointsScore();
+                checkSetWinner(p1,p2);
             }
         });
-        p2_dec_point.setOnClickListener(new View.OnClickListener() {
+        p2.getDec_point().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int points=Integer.parseInt(p2_points.getText().toString()); // get current points
+                int points=Integer.parseInt(p2.getPoints().getText().toString()); // get current points
                 if(points>0)
                     points-=1; // decrease points by 1
-                p2_points.setText(String.valueOf(points));
-                check_set_winner();
+                p2.getPoints().setText(String.valueOf(points));
+                updatePointsScore();
+                checkSetWinner(p1,p2);
             }
         });
-        set_current_set();
-    }
-    private boolean confirmSetScore(){
-        boolean dialog_confirm_set;
-        final int p1_pts = Integer.parseInt(p1_points.getText().toString());
-        final int p2_pts = Integer.parseInt(p2_points.getText().toString());
-        AlertDialog builder=new AlertDialog.Builder(activity )
-                .setMessage("Czy chcesz zatwierdzić wynik tego seta?")
-                .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //yes code
-                        p1_current_set_points.setText(String.valueOf(p1_pts));
-                        p1_set_bilans.setText(String.valueOf(Integer.parseInt(p1_set_bilans.getText().toString()) + 1));
-                        p1_points.setText("0");
-
-                        p2_current_set_points.setText(String.valueOf(p2_pts));
-                        p2_points.setText("0");
-                        current_set_colon.setText(":");
-                        check_match_winner();
-                        current_set += 1;
-                        set_current_set();
-                    }
-                })
-                .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //no code
-                        dialog_confirm_set = false;
-                    }
-                }).show();
-        return dialog_confirm_set;
     }
 
-    private boolean confirmMatchScore(){ //get match document and update
+    private void confirmSetScore(final Player set_winner, final Player set_looser){
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setMessage(lang.getConfirmSetMessage())
+                    .setPositiveButton(lang.getYesOption(), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            set_winner.win_set();
+                            set_looser.loose_set();
+                            current_set_colon.setText(":");
+                            updateSetScore();
+                            if (checkMatchEnd()) { //check if match is over
+                                confirmMatchScore(set_winner,set_looser);
+                            }
+                            else {
+                                current_set += 1;
+                                setCurrentSet();
+                                p1.enable_buttons();
+                                p2.enable_buttons();
+                            }
+                        }
+                    })
+                    .setNegativeButton(lang.getNoOption(), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            p1.enable_buttons();
+                            p2.enable_buttons();
+                        }
+                    });
+            builder.setCancelable(false).show();
+    }
 
+    private void confirmMatchScore(final Player match_winner, final Player match_looser){ //get match document and update
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage("Czy chcesz zatwierdzić wynik tego seta?");
-        builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //yes code
-                dialog_confirm_match = true;
-            }
-        }).show();
-        builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //no code
-                dialog_confirm_match = false;
-            }
-        }).show();
-        return dialog_confirm_match;
+        builder.setMessage(lang.getEndOfMatchMessage())
+                .setPositiveButton(lang.getOkOption(), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        p1.disable_buttons();
+                        p2.disable_buttons();
+                        //save & close match document  c c
+                        match_winner.getName().setText("WINNER");
+                    }
+                });
+        builder.setCancelable(false).show();
     }
 
-    private void check_match_winner(){
-        String p1_score=p1_set_bilans.getText().toString();
-        String p2_score=p2_set_bilans.getText().toString();
-
-        String wynik=p1_score+":"+p2_score;
-
-        switch (wynik){
-            case "2:0":
-                //p1 wins
-            case "2:1":
-                //p1 wins
-            case "0:2":
-                //p2 wins
-            case "1:2":
-                //p2 wins
-        }
+    private boolean checkMatchEnd(){
+        String p1_score=p1.getSet_bilans().getText().toString();
+        String p2_score=p2.getSet_bilans().getText().toString();
+        return p1_score.equals("2") || p2_score.equals("2") ? true : false;
     }
-    private void set_current_set(){
+
+    private void setCurrentSet(){
         switch (current_set){
             case 1:
-                p1_current_set_points=p1_set1_points;
-                p2_current_set_points=p2_set1_points;
+                p1.setCurrent_set_points(p1.getSet1_points());
+                p2.setCurrent_set_points(p2.getSet1_points());
                 current_set_colon=set1_colon;
                 break;
 
             case 2:
-                p1_current_set_points=p1_set2_points;
-                p2_current_set_points=p2_set2_points;
+                p1.setCurrent_set_points(p1.getSet2_points());
+                p2.setCurrent_set_points(p2.getSet2_points());
                 current_set_colon=set2_colon;
+                setRTL(activity.getResources().getConfiguration());
                 break;
 
             case 3:
-                p1_current_set_points=p1_set3_points;
-                p2_current_set_points=p2_set3_points;
+                p1.setCurrent_set_points(p1.getSet3_points());
+                p2.setCurrent_set_points(p2.getSet3_points());
                 current_set_colon=set3_colon;
+                setLTR(activity.getResources().getConfiguration());
                 break;
-
         }
     }
 
-    private void check_set_winner() {
-        int p1_pts = Integer.parseInt(p1_points.getText().toString());
-        int p2_pts = Integer.parseInt(p2_points.getText().toString());
+    private void checkSetWinner(Player p1, Player p2) { // return set winner player
+        int p1_pts = p1.getPointsInt();
+        int p2_pts = p2.getPointsInt();
 
-        if (p1_pts == 2 && p2_pts == 1) { //p1 wins
-            if (confirmSetScore()) {
-                p1_current_set_points.setText(String.valueOf(p1_pts));
-                p1_set_bilans.setText(String.valueOf(Integer.parseInt(p1_set_bilans.getText().toString()) + 1));
-                p1_points.setText("0");
-
-                p2_current_set_points.setText(String.valueOf(p2_pts));
-                p2_points.setText("0");
-                current_set_colon.setText(":");
-                check_match_winner();
-                current_set += 1;
-                set_current_set();
-            } else {
-                return;
-            }
-
-        } else if (p1_pts >= 21 && p1_pts < 30 && p1_pts - p2_pts >= 2) { //p1 wins
-            p1_current_set_points.setText(String.valueOf(p1_pts));
-            p1_set_bilans.setText(String.valueOf(Integer.parseInt(p1_set_bilans.getText().toString()) + 1)); // get current p1_set_bilans and increase by 1
-            p1_points.setText("0");
-
-            p2_current_set_points.setText(String.valueOf(p2_pts));
-            p2_points.setText("0");
-            current_set += 1;
-        } else if (p2_pts == 30 && p1_pts == 29) { //p2 wins
-            p2_current_set_points.setText(String.valueOf(p2_pts));
-            p2_set_bilans.setText(String.valueOf(Integer.parseInt(p2_set_bilans.getText().toString()) + 1));
-            p2_points.setText("0");
-
-            p1_current_set_points.setText(String.valueOf(p1_pts));
-            p1_points.setText("0");
-            current_set += 1;
-        } else if (p2_pts >= 21 && p2_pts < 30 && p2_pts - p1_pts >= 2) { //p2 wins
-            p2_current_set_points.setText(String.valueOf(p2_pts));
-            p2_set_bilans.setText(String.valueOf(Integer.parseInt(p2_set_bilans.getText().toString()) + 1));
-            p2_points.setText("0");
-
-            p1_current_set_points.setText(String.valueOf(p1_pts));
-            p1_points.setText("0");
-            current_set += 1;
+        if (p1_pts == 30 && p2_pts == 29) { //p1 wins
+            p1.disable_buttons();
+            p2.disable_buttons();
+            confirmSetScore(p1,p2);
         }
+        else if (p1_pts >= 21 && p1_pts < 30 && p1_pts - p2_pts >= 2) { //p1 wins
+            p1.disable_buttons();
+            p2.disable_buttons();
+            confirmSetScore(p1,p2);
+        }
+        else if (p2_pts == 30 && p1_pts == 29) { //p2 wins
+            p1.disable_buttons();
+            p2.disable_buttons();
+            confirmSetScore(p2,p1);
+        }
+        else if (p2_pts >= 21 && p2_pts < 30 && p2_pts - p1_pts >= 2) { //p2 wins
+            p1.disable_buttons();
+            p2.disable_buttons();
+            confirmSetScore(p2,p1);
+        }
+    }
+
+    private void updatePointsScore(){
+
+        String p1_current_set_points;
+        String p2_current_set_points;
+
+        switch(current_set){
+            case 1:
+                p1_current_set_points="p1_s1_points";
+                p2_current_set_points="p2_s1_points";
+            case 2:
+                p1_current_set_points="p1_s2_points";
+                p2_current_set_points="p2_s2_points";
+            case 3:
+                p1_current_set_points="p1_s3_points";
+                p2_current_set_points="p2_s3_points";
+            default:
+                p1_current_set_points="p1_s1_points";
+                p2_current_set_points="p2_s1_points";
+        }
+        match_document.update(
+                p1_current_set_points,p1.getPoints().getText().toString(),
+                p2_current_set_points,p2.getPoints().getText().toString()
+        );
+    }
+
+    private void updateSetScore(){
+        match_document.update(
+                "p1_set_bilans",p1.getSet_bilans().getText().toString(),
+                "p2_set_bilans",p2.getSet_bilans().getText().toString()
+        );
+    }
+
+    private void setRTL(Configuration newConfig){ //setup layout for right-to-left orientation
+        activity.onConfigurationChanged(newConfig);
+        newConfig.screenLayout=Configuration.SCREENLAYOUT_LAYOUTDIR_RTL;
+    }
+
+    private void setLTR(Configuration newConfig){
+        activity.onConfigurationChanged(newConfig);
+        newConfig.screenLayout=Configuration.SCREENLAYOUT_LAYOUTDIR_LTR;
     }
 }

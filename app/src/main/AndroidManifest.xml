@@ -11,8 +11,9 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
             android:name=".LiveScore.LiveScoreActivity"
+            android:layoutDirection="rtl"
             android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="layoutDirection|orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_live_score"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>

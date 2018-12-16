@@ -22,7 +22,6 @@ public class LiveScoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_live_score);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         presenter=new LiveScorePresenter(this);
-        presenter.init();
     }
 }
 
