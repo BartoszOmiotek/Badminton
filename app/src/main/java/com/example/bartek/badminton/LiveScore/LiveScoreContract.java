@@ -1,10 +1,6 @@
 package com.example.bartek.badminton.LiveScore;
 
 public interface LiveScoreContract {
-    interface MvpView{
+    public void init();
 
-    }
-    interface Presenter{
-
-    }
 }

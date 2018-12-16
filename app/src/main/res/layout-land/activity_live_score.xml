@@ -30,51 +30,48 @@
             android:text=":"
             android:textColor="@color/colorPrimary"
             android:textSize="45sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView13"
+            app:layout_constraintBottom_toTopOf="@+id/set1_colon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/set1_colon"
             android:layout_width="5dp"
             android:layout_height="34dp"
-            android:text=":"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView11"
+            app:layout_constraintBottom_toTopOf="@+id/set2_colon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/set2_colon"
             android:layout_width="5dp"
             android:layout_height="34dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text=":"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView12"
+            app:layout_constraintBottom_toTopOf="@+id/set3_colon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            app:layout_constraintTop_toBottomOf="@+id/set1_colon" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/set3_colon"
             android:layout_width="5dp"
             android:layout_height="34dp"
             android:layout_marginBottom="56dp"
-            android:text=":"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/imageView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            app:layout_constraintTop_toBottomOf="@+id/set2_colon" />
 
         <TextView
             android:id="@+id/p1_points"
@@ -350,7 +347,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/p2_inc_point_btn"
             app:layout_constraintStart_toEndOf="@+id/p1_inc_point_btn"
-            app:srcCompat="@android:drawable/checkbox_on_background" />
+            android:contentDescription="TODO" app:srcCompat="@android:drawable/checkbox_on_background" />
 
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
