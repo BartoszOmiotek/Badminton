@@ -1,120 +1,123 @@
 package com.example.bartek.badminton.LiveScore;
 
 import android.content.DialogInterface;
-import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.TextView;
 
-import com.example.bartek.badminton.Language.LanguageInterface;
-import com.example.bartek.badminton.Language.LanguageEnglish;
 import com.example.bartek.badminton.R;
 import com.google.firebase.firestore.DocumentReference;
 
-import java.util.Locale;
-import android.content.res.Resources;
-
-public class LiveScorePresenter implements LiveScoreContract{
+public class LiveScorePresenter{
 
     private LiveScoreActivity activity;
-    private DocumentReference match_document;
-    private LanguageInterface lang=new LanguageEnglish(); //set language --TO DO: GET LANGUAGE FROM APP OPTIONS
+    private DocumentReference match_doc_ref;
     private Player p1;
     private Player p2;
 
     private int current_set; // describes number representation of current set (1,2,3)
-    private TextView set1_colon;
-    private TextView set2_colon;
-    private TextView set3_colon;
-    private TextView current_set_colon;
+    private Player current_player;
 
-    LiveScorePresenter(LiveScoreActivity activity){ // constructor
-        this.activity=activity;
+    LiveScorePresenter(LiveScoreActivity activity,DocumentReference match_doc_ref){ // constructor
+        this.activity = activity;
+        this.match_doc_ref = match_doc_ref;
         init();
+        updateMatchStatus("1"); //update match status to LIVE
     }
 
-    @Override
     public void init() {
-        match_document=new LiveScoreModel().getMatchReference();
-        set1_colon=activity.findViewById(R.id.set1_colon);
-        set2_colon=activity.findViewById(R.id.set2_colon);
-        set3_colon=activity.findViewById(R.id.set3_colon);
-
         p1=new Player(activity,"1");
         p2=new Player(activity,"2");
 
         current_set=1;
-        setCurrentSet();
+        setCurrentSet(current_set);
+        current_player=p1; // set p1 as starting player
+        setSides(p1,p2); // set sides for beginning
 
-        p1.getInc_point().setOnClickListener(new View.OnClickListener() {
+        p1.getIncPoint().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int points=Integer.parseInt(p1.getPoints().getText().toString()); // get current points
+                //p1.getName().setText(match.getP1Name());
+                int points=Integer.parseInt(p1.getCurrentSetPoints().getText().toString()); // get current points
                 points+=1; // increase points by 1
+                p1.getCurrentSetPoints().setText(String.valueOf(points));
                 p1.getPoints().setText(String.valueOf(points));
+                current_player=p1;
+                setSides(p1,p2);
                 updatePointsScore();
                 checkSetWinner(p1,p2);
             }
         });
-        p1.getDec_point().setOnClickListener(new View.OnClickListener() {
+        p1.getDecPoint().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int points=Integer.parseInt(p1.getPoints().getText().toString()); // get current points
+                int points=Integer.parseInt(p1.getCurrentSetPoints().getText().toString()); // get current points
                 if(points>0)
                     points-=1; // decrease points by 1
+                p1.getCurrentSetPoints().setText(String.valueOf(points));
                 p1.getPoints().setText(String.valueOf(points));
+                current_player=p1;
+                setSides(p1,p2);
                 updatePointsScore();
                 checkSetWinner(p1,p2);
             }
         });
-        p2.getInc_point().setOnClickListener(new View.OnClickListener() {
+        p2.getIncPoint().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int points=Integer.parseInt(p2.getPoints().getText().toString()); // get current points
+                int points=Integer.parseInt(p2.getCurrentSetPoints().getText().toString()); // get current points
                 points+=1; // increase points by 1
+                p2.getCurrentSetPoints().setText(String.valueOf(points));
                 p2.getPoints().setText(String.valueOf(points));
+                current_player=p2;
+                setSides(p1,p2);
                 updatePointsScore();
                 checkSetWinner(p1,p2);
             }
         });
-        p2.getDec_point().setOnClickListener(new View.OnClickListener() {
+        p2.getDecPoint().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int points=Integer.parseInt(p2.getPoints().getText().toString()); // get current points
+                int points=Integer.parseInt(p2.getCurrentSetPoints().getText().toString()); // get current points
                 if(points>0)
                     points-=1; // decrease points by 1
+                p2.getCurrentSetPoints().setText(String.valueOf(points));
                 p2.getPoints().setText(String.valueOf(points));
+                current_player=p2;
+                setSides(p1,p2);
                 updatePointsScore();
                 checkSetWinner(p1,p2);
             }
         });
     }
-
     private void confirmSetScore(final Player set_winner, final Player set_looser){
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setMessage(lang.getConfirmSetMessage())
-                    .setPositiveButton(lang.getYesOption(), new DialogInterface.OnClickListener() {
+            builder.setMessage(R.string.confirm_set_message)
+                    .setPositiveButton(R.string.yes_option, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            set_winner.win_set();
-                            set_looser.loose_set();
-                            current_set_colon.setText(":");
+                            set_winner.winSet();
+                            set_winner.getCurrentSetPoints().setTypeface(null, Typeface.BOLD);
+                            set_winner.getPoints().setText("0");
+                            set_looser.looseSet();
+                            set_looser.getPoints().setText("0");
                             updateSetScore();
                             if (checkMatchEnd()) { //check if match is over
                                 confirmMatchScore(set_winner,set_looser);
                             }
                             else {
                                 current_set += 1;
-                                setCurrentSet();
-                                p1.enable_buttons();
-                                p2.enable_buttons();
+                                setCurrentSet(current_set);
+                                p1.enableButtons();
+                                p2.enableButtons();
                             }
                         }
                     })
-                    .setNegativeButton(lang.getNoOption(), new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.no_option, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
-                            p1.enable_buttons();
-                            p2.enable_buttons();
+                            p1.enableButtons();
+                            p2.enableButtons();
                         }
                     });
             builder.setCancelable(false).show();
@@ -122,44 +125,43 @@ public class LiveScorePresenter implements LiveScoreContract{
 
     private void confirmMatchScore(final Player match_winner, final Player match_looser){ //get match document and update
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(lang.getEndOfMatchMessage())
-                .setPositiveButton(lang.getOkOption(), new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.end_match_message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        p1.disable_buttons();
-                        p2.disable_buttons();
-                        //save & close match document  c c
-                        match_winner.getName().setText("WINNER");
+                        p1.disableButtons();
+                        p2.disableButtons();
+                        //save & close match document
+                        updateMatchStatus("2"); //update match status to ended
                     }
                 });
         builder.setCancelable(false).show();
     }
 
     private boolean checkMatchEnd(){
-        String p1_score=p1.getSet_bilans().getText().toString();
-        String p2_score=p2.getSet_bilans().getText().toString();
-        return p1_score.equals("2") || p2_score.equals("2") ? true : false;
+        return p1.getSetBilans()==2 || p2.getSetBilans()==2 ? true : false;
     }
 
-    private void setCurrentSet(){
+    private void setCurrentSet(int current_set){
         switch (current_set){
             case 1:
-                p1.setCurrent_set_points(p1.getSet1_points());
-                p2.setCurrent_set_points(p2.getSet1_points());
-                current_set_colon=set1_colon;
+                p1.setCurrentSetPoints(p1.getSet1Points());
+                p2.setCurrentSetPoints(p2.getSet1Points());
+                p1.getCurrentSetPoints().setText("0");
+                p2.getCurrentSetPoints().setText("0");
                 break;
 
             case 2:
-                p1.setCurrent_set_points(p1.getSet2_points());
-                p2.setCurrent_set_points(p2.getSet2_points());
-                current_set_colon=set2_colon;
-                setRTL(activity.getResources().getConfiguration());
+                p1.setCurrentSetPoints(p1.getSet2Points());
+                p2.setCurrentSetPoints(p2.getSet2Points());
+                p1.getCurrentSetPoints().setText("0");
+                p2.getCurrentSetPoints().setText("0");
                 break;
 
             case 3:
-                p1.setCurrent_set_points(p1.getSet3_points());
-                p2.setCurrent_set_points(p2.getSet3_points());
-                current_set_colon=set3_colon;
-                setLTR(activity.getResources().getConfiguration());
+                p1.setCurrentSetPoints(p1.getSet3Points());
+                p2.setCurrentSetPoints(p2.getSet3Points());
+                p1.getCurrentSetPoints().setText("0");
+                p2.getCurrentSetPoints().setText("0");
                 break;
         }
     }
@@ -169,23 +171,23 @@ public class LiveScorePresenter implements LiveScoreContract{
         int p2_pts = p2.getPointsInt();
 
         if (p1_pts == 30 && p2_pts == 29) { //p1 wins
-            p1.disable_buttons();
-            p2.disable_buttons();
+            p1.disableButtons();
+            p2.disableButtons();
             confirmSetScore(p1,p2);
         }
         else if (p1_pts >= 21 && p1_pts < 30 && p1_pts - p2_pts >= 2) { //p1 wins
-            p1.disable_buttons();
-            p2.disable_buttons();
+            p1.disableButtons();
+            p2.disableButtons();
             confirmSetScore(p1,p2);
         }
         else if (p2_pts == 30 && p1_pts == 29) { //p2 wins
-            p1.disable_buttons();
-            p2.disable_buttons();
+            p1.disableButtons();
+            p2.disableButtons();
             confirmSetScore(p2,p1);
         }
         else if (p2_pts >= 21 && p2_pts < 30 && p2_pts - p1_pts >= 2) { //p2 wins
-            p1.disable_buttons();
-            p2.disable_buttons();
+            p1.disableButtons();
+            p2.disableButtons();
             confirmSetScore(p2,p1);
         }
     }
@@ -199,36 +201,95 @@ public class LiveScorePresenter implements LiveScoreContract{
             case 1:
                 p1_current_set_points="p1_s1_points";
                 p2_current_set_points="p2_s1_points";
+                break;
+
             case 2:
                 p1_current_set_points="p1_s2_points";
                 p2_current_set_points="p2_s2_points";
+                break;
+
             case 3:
                 p1_current_set_points="p1_s3_points";
                 p2_current_set_points="p2_s3_points";
+                break;
+
             default:
                 p1_current_set_points="p1_s1_points";
                 p2_current_set_points="p2_s1_points";
         }
-        match_document.update(
-                p1_current_set_points,p1.getPoints().getText().toString(),
-                p2_current_set_points,p2.getPoints().getText().toString()
+        match_doc_ref.update(
+                p1_current_set_points,p1.getCurrentSetPoints().getText().toString(),
+                p2_current_set_points,p2.getCurrentSetPoints().getText().toString()
         );
     }
 
     private void updateSetScore(){
-        match_document.update(
-                "p1_set_bilans",p1.getSet_bilans().getText().toString(),
-                "p2_set_bilans",p2.getSet_bilans().getText().toString()
+        match_doc_ref.update(
+                "p1_set_bilans",p1.getSetBilans(),
+                "p2_set_bilans",p2.getSetBilans()
         );
     }
 
-    private void setRTL(Configuration newConfig){ //setup layout for right-to-left orientation
-        activity.onConfigurationChanged(newConfig);
-        newConfig.screenLayout=Configuration.SCREENLAYOUT_LAYOUTDIR_RTL;
+    private void updateMatchStatus(String status){
+        match_doc_ref.update(
+                "match_status",status
+        );
     }
 
-    private void setLTR(Configuration newConfig){
-        activity.onConfigurationChanged(newConfig);
-        newConfig.screenLayout=Configuration.SCREENLAYOUT_LAYOUTDIR_LTR;
+    private void setSides(Player p1, Player p2){
+        if(current_player.equals(p1)) {
+            if (p1.getPointsInt() % 2 == 0) { //check for right side serve
+                setCourtRightSidesVisibile(true);
+                setCourtLeftSidesVisibile(false);
+                p1.getCourtBot().setBackgroundResource(R.color.colorAccent);
+                p2.getCourtTop().setBackgroundColor(Color.TRANSPARENT);
+            }
+            else{
+                setCourtRightSidesVisibile(false);
+                setCourtLeftSidesVisibile(true);
+                p1.getCourtTop().setBackgroundResource(R.color.colorAccent);
+                p2.getCourtBot().setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
+        else{
+            if (p2.getPointsInt() % 2 == 0) { //check for right side serve
+                setCourtRightSidesVisibile(true);
+                setCourtLeftSidesVisibile(false);
+                p2.getCourtTop().setBackgroundResource(R.color.colorAccent);
+                p1.getCourtBot().setBackgroundColor(Color.TRANSPARENT);
+            }
+            else{
+                setCourtRightSidesVisibile(false);
+                setCourtLeftSidesVisibile(true);
+                p2.getCourtBot().setBackgroundResource(R.color.colorAccent);
+                p1.getCourtTop().setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
+    }
+
+    private void setCourtRightSidesVisibile(boolean visible){
+        if(visible){
+            p1.getCourtBot().setVisibility(View.VISIBLE);
+            p2.getCourtTop().setVisibility(View.VISIBLE);
+        }
+        else{
+            p1.getCourtBot().setVisibility(View.INVISIBLE);
+            p2.getCourtTop().setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setCourtLeftSidesVisibile(boolean visible){
+        if(visible){
+            p1.getCourtTop().setVisibility(View.VISIBLE);
+            p2.getCourtBot().setVisibility(View.VISIBLE);
+        }
+        else{
+            p1.getCourtTop().setVisibility(View.INVISIBLE);
+            p2.getCourtBot().setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void changeSides(Player p1, Player p2){
+
     }
 }

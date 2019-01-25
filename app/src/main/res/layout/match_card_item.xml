@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardElevation="0dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/black_overlay">
+
+        <TextView
+            android:id="@+id/match_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:text="00/00/0000 00:00"
+            android:textAlignment="center"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="12sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/p1_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="100dp"
+            android:text="P1_NAME"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/match_date" />
+
+        <TextView
+            android:id="@+id/p2_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginBottom="8dp"
+            android:text="P2_NAME"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/p1_name"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/p1_set_bilans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="textEnd"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/p1_name"
+            app:layout_constraintEnd_toStartOf="@+id/p1_s1_points"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/p1_name" />
+
+        <TextView
+            android:id="@+id/p2_set_bilans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/p2_name"
+            app:layout_constraintEnd_toStartOf="@+id/p2_s1_points"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/p2_name" />
+
+        <TextView
+            android:id="@+id/p1_s3_points"
+            android:layout_width="18dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/p1_name"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/p1_s2_points"
+            android:layout_width="18dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/p1_name"
+            app:layout_constraintEnd_toStartOf="@+id/p1_s3_points" />
+
+        <TextView
+            android:id="@+id/p1_s1_points"
+            android:layout_width="18dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/p1_name"
+            app:layout_constraintEnd_toStartOf="@+id/p1_s2_points" />
+
+        <TextView
+            android:id="@+id/p2_s3_points"
+            android:layout_width="18dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/p2_name"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/p2_s2_points"
+            android:layout_width="18dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/p2_name"
+            app:layout_constraintEnd_toStartOf="@+id/p2_s3_points" />
+
+        <TextView
+            android:id="@+id/p2_s1_points"
+            android:layout_width="18dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/p2_name"
+            app:layout_constraintEnd_toStartOf="@+id/p2_s2_points" />
+
+        <TextView
+            android:id="@+id/match_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/browser_actions_bg_grey"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/match_date"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintGuide_begin="144dp" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
