@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.example.bartek.badminton.R;
 
-public class Player {
+public class LiveScorePlayerHolder {
 
     private TextView name;
     private TextView points;
@@ -14,7 +14,7 @@ public class Player {
     private Button dec_point;
     private TextView current_set_points;
 
-    private long set_bilans;
+    private long set_result;
     private TextView set1_points;
     private TextView set2_points;
     private TextView set3_points;
@@ -22,7 +22,7 @@ public class Player {
     private TextView court_top;
     private TextView court_bot;
 
-    Player(Activity activity, String playerId){
+    LiveScorePlayerHolder(Activity activity, String playerId){
         if(playerId.equals("1")) {
             name=activity.findViewById(R.id.p1_name);
             points = activity.findViewById(R.id.p1_points);
@@ -74,7 +74,7 @@ public class Player {
 
     public void winSet(){
         //current_set_points.setText(points.getText().toString());
-        set_bilans++;
+        set_result++;
         //points.setText("0");
     }
 
@@ -96,7 +96,7 @@ public class Player {
 //getters
     public TextView getPoints() { return points; }
     public int getPointsInt(){ return Integer.parseInt(current_set_points.getText().toString()); }
-    public long getSetBilans() { return set_bilans; }
+    public long getSetResult() { return set_result; }
     public Button getIncPoint() {
         return inc_point;
     }
@@ -122,24 +122,24 @@ public class Player {
     public TextView getCourtBot() {return court_bot; };
 
 //setters
-    public void setSet_bilans(int set_bilans) { this.set_bilans = set_bilans; }
+    public void setSetResult(int set_result) { this.set_result = set_result; }
     public void setCurrentSetPoints(TextView current_set_points) { this.current_set_points = current_set_points; }
-    public void setSet1_points(TextView set1_points) {
+    public void setSet1Points(TextView set1_points) {
         this.set1_points = set1_points;
     }
-    public void setSet2_points(TextView set2_points) {
+    public void setSet2Points(TextView set2_points) {
         this.set2_points = set2_points;
     }
-    public void setSet3_points(TextView set3_points) {
+    public void setSet3Points(TextView set3_points) {
         this.set3_points = set3_points;
     }
     public void setPoints(TextView points) {
         this.points = points;
     }
-    public void setInc_point(Button inc_point) {
+    public void setIncPoint(Button inc_point) {
         this.inc_point = inc_point;
     }
-    public void setDec_point(Button dec_point) {
+    public void setDecPoint(Button dec_point) {
         this.dec_point = dec_point;
     }
     public void setName(TextView name){

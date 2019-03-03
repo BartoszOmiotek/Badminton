@@ -13,11 +13,11 @@ public class LiveScorePresenter{
 
     private LiveScoreActivity activity;
     private DocumentReference match_doc_ref;
-    private Player p1;
-    private Player p2;
+    private LiveScorePlayerHolder p1;
+    private LiveScorePlayerHolder p2;
 
     private int current_set; // describes number representation of current set (1,2,3)
-    private Player current_player;
+    private LiveScorePlayerHolder current_player;
 
     LiveScorePresenter(LiveScoreActivity activity,DocumentReference match_doc_ref){ // constructor
         this.activity = activity;
@@ -27,8 +27,8 @@ public class LiveScorePresenter{
     }
 
     public void init() {
-        p1=new Player(activity,"1");
-        p2=new Player(activity,"2");
+        p1=new LiveScorePlayerHolder(activity,"1");
+        p2=new LiveScorePlayerHolder(activity,"2");
 
         current_set=1;
         setCurrentSet(current_set);
@@ -38,7 +38,6 @@ public class LiveScorePresenter{
         p1.getIncPoint().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //p1.getName().setText(match.getP1Name());
                 int points=Integer.parseInt(p1.getCurrentSetPoints().getText().toString()); // get current points
                 points+=1; // increase points by 1
                 p1.getCurrentSetPoints().setText(String.valueOf(points));
@@ -91,7 +90,7 @@ public class LiveScorePresenter{
             }
         });
     }
-    private void confirmSetScore(final Player set_winner, final Player set_looser){
+    private void confirmSetScore(final LiveScorePlayerHolder set_winner, final LiveScorePlayerHolder set_looser){
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setMessage(R.string.confirm_set_message)
                     .setPositiveButton(R.string.yes_option, new DialogInterface.OnClickListener() {
@@ -123,7 +122,7 @@ public class LiveScorePresenter{
             builder.setCancelable(false).show();
     }
 
-    private void confirmMatchScore(final Player match_winner, final Player match_looser){ //get match document and update
+    private void confirmMatchScore(final LiveScorePlayerHolder match_winner, final LiveScorePlayerHolder match_looser){ //get match document and update
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(R.string.end_match_message)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -138,7 +137,7 @@ public class LiveScorePresenter{
     }
 
     private boolean checkMatchEnd(){
-        return p1.getSetBilans()==2 || p2.getSetBilans()==2 ? true : false;
+        return p1.getSetResult()==2 || p2.getSetResult()==2 ? true : false;
     }
 
     private void setCurrentSet(int current_set){
@@ -166,7 +165,7 @@ public class LiveScorePresenter{
         }
     }
 
-    private void checkSetWinner(Player p1, Player p2) { // return set winner player
+    private void checkSetWinner(LiveScorePlayerHolder p1, LiveScorePlayerHolder p2) { // return set winner player
         int p1_pts = p1.getPointsInt();
         int p2_pts = p2.getPointsInt();
 
@@ -199,23 +198,23 @@ public class LiveScorePresenter{
 
         switch(current_set){
             case 1:
-                p1_current_set_points="p1_s1_points";
-                p2_current_set_points="p2_s1_points";
+                p1_current_set_points="p1S1Points";
+                p2_current_set_points="p2S1Points";
                 break;
 
             case 2:
-                p1_current_set_points="p1_s2_points";
-                p2_current_set_points="p2_s2_points";
+                p1_current_set_points="p1S2Points";
+                p2_current_set_points="p2S2Points";
                 break;
 
             case 3:
-                p1_current_set_points="p1_s3_points";
-                p2_current_set_points="p2_s3_points";
+                p1_current_set_points="p1S3Points";
+                p2_current_set_points="p2S3Points";
                 break;
 
             default:
-                p1_current_set_points="p1_s1_points";
-                p2_current_set_points="p2_s1_points";
+                p1_current_set_points="p1S1Points";
+                p2_current_set_points="p2S1Points";
         }
         match_doc_ref.update(
                 p1_current_set_points,p1.getCurrentSetPoints().getText().toString(),
@@ -225,29 +224,29 @@ public class LiveScorePresenter{
 
     private void updateSetScore(){
         match_doc_ref.update(
-                "p1_set_bilans",p1.getSetBilans(),
-                "p2_set_bilans",p2.getSetBilans()
+                "p1SetResult",p1.getSetResult(),
+                "p2SetResult",p2.getSetResult()
         );
     }
 
     private void updateMatchStatus(String status){
         match_doc_ref.update(
-                "match_status",status
+                "matchStatus",status
         );
     }
 
-    private void setSides(Player p1, Player p2){
+    private void setSides(LiveScorePlayerHolder p1, LiveScorePlayerHolder p2){
         if(current_player.equals(p1)) {
             if (p1.getPointsInt() % 2 == 0) { //check for right side serve
                 setCourtRightSidesVisibile(true);
                 setCourtLeftSidesVisibile(false);
-                p1.getCourtBot().setBackgroundResource(R.color.colorAccent);
+                p1.getCourtBot().setBackgroundResource(R.color.colorLiveScoreCourt);
                 p2.getCourtTop().setBackgroundColor(Color.TRANSPARENT);
             }
             else{
                 setCourtRightSidesVisibile(false);
                 setCourtLeftSidesVisibile(true);
-                p1.getCourtTop().setBackgroundResource(R.color.colorAccent);
+                p1.getCourtTop().setBackgroundResource(R.color.colorLiveScoreCourt);
                 p2.getCourtBot().setBackgroundColor(Color.TRANSPARENT);
             }
         }
@@ -255,13 +254,13 @@ public class LiveScorePresenter{
             if (p2.getPointsInt() % 2 == 0) { //check for right side serve
                 setCourtRightSidesVisibile(true);
                 setCourtLeftSidesVisibile(false);
-                p2.getCourtTop().setBackgroundResource(R.color.colorAccent);
+                p2.getCourtTop().setBackgroundResource(R.color.colorLiveScoreCourt);
                 p1.getCourtBot().setBackgroundColor(Color.TRANSPARENT);
             }
             else{
                 setCourtRightSidesVisibile(false);
                 setCourtLeftSidesVisibile(true);
-                p2.getCourtBot().setBackgroundResource(R.color.colorAccent);
+                p2.getCourtBot().setBackgroundResource(R.color.colorLiveScoreCourt);
                 p1.getCourtTop().setBackgroundColor(Color.TRANSPARENT);
             }
         }
@@ -289,7 +288,7 @@ public class LiveScorePresenter{
         }
     }
 
-    public void changeSides(Player p1, Player p2){
+    public void changeSides(LiveScorePlayerHolder p1, LiveScorePlayerHolder p2){
 
     }
 }

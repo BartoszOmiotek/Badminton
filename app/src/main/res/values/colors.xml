@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#9444EF56</color>
+    <color name="colorPrimaryDark">#004D40</color>
+    <color name="colorAccent">#00897B</color>
+    <color name="textColorPrimary">#FFFFFF</color>
 
     <color name="black_overlay">#B7000000</color>
-    <color name="colorLive">#75D600</color>
+    <color name="colorLive">#549A00</color>
+    <color name="colorLiveScoreCourt">#B300D632</color>
+    <color name="table_odd_item_color">#A2000000</color>
+    <color name="card_light_grey">#424242</color>
 </resources>

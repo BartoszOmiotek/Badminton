@@ -2,14 +2,11 @@
     <string name="app_name">Badminton</string>
 
     <string name="title_activity_welcome">Welcome</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_main">MainActivity</string>
-
     <string name="title_activity_live_score">LiveScore</string>
-
     <string name="title_activity_fullscreen">FullscreenActivity</string>
-
+    <string name="upcoming_matches_message">Upcoming matches:</string>
+    <string name="no_upcoming_matches_message">There are no upcoming matches.</string>
     <string name="confirm_set_message">Do you confirm result of this set?</string>
     <string name="yes_option">Yes</string>
     <string name="no_option">No</string>
@@ -17,6 +14,7 @@
     <string name="loading">Loading...</string>
     <string name="title_activity_today_matches">TodayMatches</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="log_in_button">Log In</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -33,4 +31,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="court">Court</string>
+
+    <string name="facebook_application_id" translatable="false">example.com.bartek.badminton</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fbexample.com.bartek.badminton</string>
 </resources>

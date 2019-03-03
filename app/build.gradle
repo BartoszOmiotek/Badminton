@@ -6,12 +6,13 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.bartek.badminton"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -34,6 +35,7 @@ dependencies {
     implementation 'com.android.support:support-vector-drawable:28.0.0'
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.3'
+    implementation 'com.google.firebase:firebase-storage:16.0.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -50,6 +52,9 @@ dependencies {
     annotationProcessor 'com.google.auto.value:auto-value:1.4'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha09'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     // FirebaseUI for Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:4.3.1'

@@ -4,32 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/com_smart_login_code"
+    android:background="@color/fui_bgGitHub"
     tools:context=".LiveScore.LiveScoreActivity"
     tools:layout_editor_absoluteY="25dp">
 
     <ImageView
-        android:id="@+id/scoreboard"
+        android:id="@+id/match_court"
         android:layout_width="0dp"
-        android:layout_height="65dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/court"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/scoreboard_shadows" />
-
-    <ImageView
-        android:id="@+id/court"
-        android:layout_width="0dp"
-        android:layout_height="299dp"
-        android:layout_marginStart="60dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="82dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="82dp"
         android:layout_marginBottom="8dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -37,35 +24,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/court_shadow_middle" />
-
-    <Button
-        android:id="@+id/p1_inc_point_btn"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginEnd="8dp"
-        android:text="+"
-        app:layout_constraintBottom_toTopOf="@+id/p1_dec_point_btn"
-        app:layout_constraintEnd_toStartOf="@+id/p1_court_top"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/p2_inc_point_btn"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginEnd="8dp"
-        android:text="+"
-        app:layout_constraintBottom_toTopOf="@+id/p2_dec_point_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/p2_court_top"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
         android:id="@+id/p1_name"
@@ -75,6 +33,7 @@
         android:text="p1_name"
         android:textAlignment="viewStart"
         android:textColor="@color/colorPrimary"
+        android:visibility="visible"
         app:layout_constraintBaseline_toBaselineOf="@+id/p1_set1_points"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -86,82 +45,74 @@
         android:text="p2_name"
         android:textAlignment="viewStart"
         android:textColor="@color/colorPrimary"
+        android:visibility="visible"
         app:layout_constraintBaseline_toBaselineOf="@+id/p2_set1_points"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/p1_court_top"
-        android:layout_width="180dp"
-        android:layout_height="152dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="140dp"
-        android:background="@color/colorAccent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="83dp"
+        android:layout_marginEnd="88dp"
+        android:background="@color/colorLiveScoreCourt"
         android:gravity="center"
         android:text="p1_court_top"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/middle_guideline"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4"
-        tools:background="@color/colorAccent" />
+        app:layout_constraintTop_toTopOf="@+id/match_court"
+        app:layout_constraintVertical_bias="0.4" />
 
     <TextView
         android:id="@+id/p2_court_top"
-        android:layout_width="180dp"
-        android:layout_height="152dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="140dp"
-        android:background="@color/colorAccent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginEnd="83dp"
+        android:background="@color/colorLiveScoreCourt"
         android:gravity="center"
         android:text="p2_court_top"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.269"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/middle_guideline"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/match_court" />
 
     <TextView
         android:id="@+id/p1_court_bot"
-        android:layout_width="180dp"
-        android:layout_height="152dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="83dp"
+        android:layout_marginEnd="88dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/colorAccent"
+        android:background="@color/colorLiveScoreCourt"
         android:gravity="center"
         android:text="p1_court_down"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/middle_guideline"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.956" />
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <TextView
         android:id="@+id/p2_court_bot"
-        android:layout_width="181dp"
-        android:layout_height="152dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginEnd="83dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/colorAccent"
+        android:background="@color/colorLiveScoreCourt"
         android:gravity="center"
         android:text="p2_court_down"
         android:textAlignment="center"
@@ -171,7 +122,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="@+id/middle_guideline"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:layout_constraintVertical_bias="0.95" />
 
     <TextView
@@ -210,14 +161,10 @@
         android:layout_height="26dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="11dp"
-        android:layout_marginEnd="320dp"
         android:gravity="center_vertical|center_horizontal|center"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/scoreboard"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/p1_set2_points"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -227,14 +174,10 @@
         android:layout_height="26dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="320dp"
         android:gravity="center_vertical|center_horizontal|center"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/scoreboard"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/p2_set2_points"
         app:layout_constraintTop_toBottomOf="@+id/p1_set3_points" />
 
@@ -268,27 +211,6 @@
         app:layout_constraintStart_toEndOf="@+id/p2_set1_points"
         app:layout_constraintTop_toBottomOf="@+id/p1_set2_points" />
 
-    <ImageView
-        android:id="@+id/p1_flag"
-        android:layout_width="31dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="164dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/p1_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/flag" />
-
-    <ImageView
-        android:id="@+id/p2_flag"
-        android:layout_width="31dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="164dp"
-        app:layout_constraintEnd_toStartOf="@+id/p2_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/p1_flag"
-        app:srcCompat="@drawable/flag" />
-
     <Button
         android:id="@+id/p1_dec_point_btn"
         android:layout_width="0dp"
@@ -304,6 +226,20 @@
         app:layout_constraintTop_toBottomOf="@+id/p1_inc_point_btn" />
 
     <Button
+        android:id="@+id/p1_inc_point_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="8dp"
+        android:text="+"
+        app:layout_constraintBottom_toTopOf="@+id/p1_dec_point_btn"
+        app:layout_constraintEnd_toStartOf="@+id/p1_court_top"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
         android:id="@+id/p2_dec_point_btn"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -315,6 +251,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/p2_court_bot"
         app:layout_constraintTop_toBottomOf="@+id/p2_inc_point_btn" />
+
+    <Button
+        android:id="@+id/p2_inc_point_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="8dp"
+        android:text="+"
+        app:layout_constraintBottom_toTopOf="@+id/p2_dec_point_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/p2_court_top"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <android.support.constraint.Guideline
         android:id="@+id/middle_guideline"
@@ -359,44 +310,11 @@
         app:layout_constraintStart_toStartOf="@+id/middle_guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/p1_swap_btn"
-        android:layout_width="95dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="SWAP"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/middle_guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/p2_swap_btn"
-        android:layout_width="95dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="SWAP"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/middle_guideline"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="687dp"
-        android:layout_height="396dp"
-        android:background="@color/black_overlay"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="-4dp" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.59" />
 
 </android.support.constraint.ConstraintLayout>
