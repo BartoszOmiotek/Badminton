@@ -24,7 +24,7 @@ public class TableAdapter extends FirestoreRecyclerAdapter<Player, TableAdapter.
     protected void onBindViewHolder(@NonNull PlayerHolder holder, int position, @NonNull Player model) {
         holder.position.setText((holder.getAdapterPosition()+1)+".");  // FIX ME -- when position is table has changed, it doubles position number with previous player
         holder.name.setText(model.getLastName().toUpperCase());
-        holder.sets_bilans.setText(model.getSetsWon()+":"+model.getSetsLost());
+        holder.sets_balance.setText(model.getSetsWon()+":"+model.getSetsLost());
         holder.matches.setText(String.valueOf(model.getMatchesWon()+model.getMatchesLost()));
         holder.matches_won.setText(String.valueOf(model.getMatchesWon()));
         holder.matches_lost.setText(String.valueOf(model.getMatchesLost()));
@@ -43,7 +43,7 @@ public class TableAdapter extends FirestoreRecyclerAdapter<Player, TableAdapter.
         private TextView matches;
         private TextView matches_won;
         private TextView matches_lost;
-        private TextView sets_bilans;
+        private TextView sets_balance;
         private TextView points;
         private TextView position;
 
@@ -53,7 +53,7 @@ public class TableAdapter extends FirestoreRecyclerAdapter<Player, TableAdapter.
             matches=itemView.findViewById(R.id.table_matches);
             matches_won=itemView.findViewById(R.id.table_matches_won);
             matches_lost=itemView.findViewById(R.id.table_matches_lost);
-            sets_bilans=itemView.findViewById(R.id.table_bilans);
+            sets_balance =itemView.findViewById(R.id.table_sets_balance);
             points=itemView.findViewById(R.id.table_points);
             position=itemView.findViewById(R.id.table_position);
 
@@ -73,6 +73,7 @@ public class TableAdapter extends FirestoreRecyclerAdapter<Player, TableAdapter.
             });
         }
     }
+
     public interface OnItemClickListener{
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
     }
