@@ -2,11 +2,13 @@ package com.example.bartek.badminton.LeagueMenu;
 
 import com.example.bartek.badminton.DataModels.Match;
 import com.example.bartek.badminton.LiveScore.LiveScoreActivity;
+import com.example.bartek.badminton.MainMenu.MainMenuActivity;
 import com.example.bartek.badminton.News.NewsActivity;
 import com.example.bartek.badminton.Players.PlayersActivity;
 import com.example.bartek.badminton.Profile.ProfileActivity;
 import com.example.bartek.badminton.R;
 import com.example.bartek.badminton.Table.TableActivity;
+import com.example.bartek.badminton.Utils.ShowActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,19 +30,20 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MenuActivity extends AppCompatActivity {
+public class LeagueMenuActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference matches = db.collection("Leagues/TestLiga/Matches");
-    private MatchAdapter matchAdapter;
+    private LeagueMatchAdapter leagueMatchAdapter;
     private Toolbar toolbar;
     private Button table_button;
     private Button players_button;
     private Button news_button;
+    private Button matches_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.activity_league_menu);
         setupRecyclerView();
 
         toolbar=findViewById(R.id.menu_toolbar);
@@ -53,9 +56,7 @@ public class MenuActivity extends AppCompatActivity {
         table_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(), TableActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getApplicationContext().startActivity(intent);
+                ShowActivity.show(getApplicationContext(),TableActivity.class);
             }
         });
 
@@ -63,9 +64,7 @@ public class MenuActivity extends AppCompatActivity {
         players_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(), PlayersActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getApplicationContext().startActivity(intent);
+                ShowActivity.show(getApplicationContext(),PlayersActivity.class);
             }
         });
 
@@ -73,9 +72,15 @@ public class MenuActivity extends AppCompatActivity {
         news_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(), NewsActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getApplicationContext().startActivity(intent);
+                ShowActivity.show(getApplicationContext(),NewsActivity.class);
+            }
+        });
+
+        matches_button=findViewById(R.id.menu_matches_button);
+        matches_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowActivity.show(getApplicationContext(),MainMenuActivity.class);
             }
         });
 
@@ -104,13 +109,13 @@ public class MenuActivity extends AppCompatActivity {
                 .setQuery(query, Match.class)
                 .build();
 
-        matchAdapter = new MatchAdapter(options);
+        leagueMatchAdapter = new LeagueMatchAdapter(options);
         RecyclerView recyclerView = findViewById(R.id.menu_upcoming_matches_rv);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(matchAdapter);
+        recyclerView.setAdapter(leagueMatchAdapter);
 
-        matchAdapter.setOnItemClickListener(new MatchAdapter.OnItemClickListener() {
+        leagueMatchAdapter.setOnItemClickListener(new LeagueMatchAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 String match_doc_path = documentSnapshot.getReference().getPath();
@@ -120,12 +125,6 @@ public class MenuActivity extends AppCompatActivity {
                 getApplicationContext().startActivity(intent);
             }
         });
-    }
-
-    public void showProfileView(){
-        Intent intent=new Intent(getApplicationContext(), ProfileActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getApplicationContext().startActivity(intent);
     }
 
     @Override
@@ -143,7 +142,7 @@ public class MenuActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.action_profile:
-                showProfileView();
+                ShowActivity.show(getApplicationContext(),ProfileActivity.class);
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -153,12 +152,12 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        matchAdapter.startListening();
+        leagueMatchAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        matchAdapter.stopListening();
+        leagueMatchAdapter.stopListening();
     }
 }
