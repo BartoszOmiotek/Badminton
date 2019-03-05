@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.bartek.badminton.DataModels.Match;
 import com.example.bartek.badminton.DataModels.Player;
 import com.example.bartek.badminton.R;
+import com.example.bartek.badminton.Utils.DateUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,10 +20,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
 
 public class PlayersAdapter extends FirestoreRecyclerAdapter<Player, PlayersAdapter.PlayerHolder> {
@@ -35,11 +39,16 @@ public class PlayersAdapter extends FirestoreRecyclerAdapter<Player, PlayersAdap
 
     @Override
     protected void onBindViewHolder(@NonNull PlayerHolder holder, int position, @NonNull Player model) {
-        Date date=model.getBirthDate();
-        SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy");
+
+        DateFormat formatter = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
+        holder.age.setText(new StringBuilder()
+                .append(DateUtils.calculateAge(model.getBirthDate()))
+                .append(" (")
+                .append(formatter.format(model.getBirthDate()))
+                .append(")")
+                .toString());
 
         holder.name.setText((model.getFirstName()+" "+model.getLastName()).toUpperCase());
-        holder.age.setText(formatter.format(date));
         holder.height.setText(model.getHeight()+" cm");
         holder.weight.setText(model.getWeight()+" kg");
         if(model.getProfilePicture().isEmpty()){
