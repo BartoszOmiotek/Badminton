@@ -14,21 +14,20 @@ import com.example.bartek.badminton.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.text.DateFormat;
+import java.util.Locale;
 
-public class MatchAdapter extends FirestoreRecyclerAdapter<Match, MatchAdapter.MatchHolder> {
+public class LeagueMatchAdapter extends FirestoreRecyclerAdapter<Match, LeagueMatchAdapter.MatchHolder> {
     private OnItemClickListener listener;
 
-    public MatchAdapter(@NonNull FirestoreRecyclerOptions<Match> options) {
+    public LeagueMatchAdapter(@NonNull FirestoreRecyclerOptions<Match> options) {
         super(options);
     }
 
     @Override
     protected void onBindViewHolder(@NonNull MatchHolder holder, int position, @NonNull Match model) {
-        Date date=model.getMatchDate();
-        SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        holder.match_date.setText(formatter.format(date));
+        DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.getDefault());
+        holder.match_date.setText(formatter.format(model.getMatchDate()));
 
         if(!model.getMatchCourt().isEmpty()) //check if there is any information about match court number
             holder.match_court_number.setText(model.getMatchCourt());
@@ -79,7 +78,7 @@ public class MatchAdapter extends FirestoreRecyclerAdapter<Match, MatchAdapter.M
 
                         holder.match_status.setText("Zakończony");
                         holder.match_status.setVisibility(View.VISIBLE);
-                        holder.match_date.setText(formatter.format(date));
+                        holder.match_date.setText(formatter.format(model.getMatchDate()));
                         break;
                 }
         }
