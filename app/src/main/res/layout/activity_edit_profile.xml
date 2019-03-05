@@ -18,16 +18,16 @@
 
     <ImageView
         android:id="@+id/profile_image"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:adjustViewBounds="true"
         android:elevation="4dp"
         android:scaleType="centerCrop"
         android:src="@drawable/empty_user"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintDimensionRatio="W,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_toolbar" />
@@ -37,7 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:hint="First name"
         android:inputType="textPersonName"
@@ -45,10 +45,11 @@
         android:textColor="@color/textColorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_progress_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_country_spinner" />
 
     <EditText
         android:id="@+id/textView15"
@@ -63,6 +64,7 @@
         android:textColor="@color/textColorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/edit_profile_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,104 +77,103 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.42" />
 
-    <ProgressBar
-        android:id="@+id/edit_profile_progress_bar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/black_overlay"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/guideline8"
-        app:layout_constraintEnd_toEndOf="@+id/profile_image"
-        app:layout_constraintStart_toStartOf="@+id/profile_image"
-        app:layout_constraintTop_toTopOf="@+id/profile_image" />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/edit_profile_choose_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_profile_progress_bar"
-        app:layout_constraintEnd_toEndOf="@+id/edit_profile_progress_bar"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+        app:layout_constraintEnd_toEndOf="@+id/profile_image"
         app:srcCompat="@drawable/ic_edit" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/edit_profile_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:clickable="true"
+        android:cursorVisible="false"
         android:ems="10"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:hint="Birth date"
         android:inputType="date"
         android:textAlignment="center"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/edit_profile_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/edit_profile_height"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="22dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:ems="10"
         android:hint="Height"
         android:inputType="number"
         android:textAlignment="center"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/editText5"
+        app:layout_constraintBottom_toTopOf="@+id/button6"
+        app:layout_constraintEnd_toStartOf="@+id/edit_profile_weight"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_date" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/edit_profile_weight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:hint="Weight"
         android:inputType="number"
         android:textAlignment="center"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_profile_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/editText4"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintStart_toEndOf="@+id/edit_profile_height"
+        app:layout_constraintTop_toTopOf="@+id/edit_profile_height" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/edit_profile_country_spinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:spinnerMode="dialog"
-        app:layout_constraintBottom_toTopOf="@+id/button6"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintTop_toTopOf="@+id/guideline8"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <Button
         android:id="@+id/button6"
-        style="@style/FirebaseUI.Button"
+        style="@style/MyButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:elevation="4dp"
         android:text="Save"
         android:textColor="@color/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_height" />
 
 </android.support.constraint.ConstraintLayout>
