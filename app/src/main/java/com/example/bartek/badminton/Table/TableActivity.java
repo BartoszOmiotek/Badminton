@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.bartek.badminton.DataModels.Player;
 import com.example.bartek.badminton.LiveScore.LiveScoreActivity;
@@ -32,7 +34,6 @@ public class TableActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Tabela");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     private void setupRecyclerView(){
@@ -70,5 +71,27 @@ public class TableActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         tableAdapter.stopListening();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.table_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()){
+
+            case R.id.action_refresh:
+                tableAdapter.notifyDataSetChanged();
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
